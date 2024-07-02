@@ -2,13 +2,70 @@
 @tailwind components;
 @tailwind utilities;
 
-@keyframes shoeanim{
-    0% {left: 1000px;}
-    100% {left: -190px;}
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans+Narrow:wght@700&display=swap');
+
+.pt-narrow-bold {
+    font-family: "PT Sans Narrow", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+  } 
+
+.bgblue{
+    background: hsla(178, 83%, 59%, 1);
+
+    background: radial-gradient(circle, hsla(178, 83%, 59%, 1) 0%, hsla(246, 100%, 31%, 1) 70%);
+    
+    background: -moz-radial-gradient(circle, hsla(178, 83%, 59%, 1) 0%, hsla(246, 100%, 31%, 1) 70%);
+    
+    background: -webkit-radial-gradient(circle, hsla(178, 83%, 59%, 1) 0%, hsla(246, 100%, 31%, 1) 70%);
+    
+    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#42EDE7", endColorstr="#10009D", GradientType=1 );
 }
 
+.bgpurple{
+    background: hsla(300, 100%, 87%, 1);
+
+    background: radial-gradient(circle, hsla(300, 100%, 87%, 1) 0%, hsla(300, 100%, 50%, 1) 70%);
+    
+    background: -moz-radial-gradient(circle, hsla(300, 100%, 87%, 1) 0%, hsla(300, 100%, 50%, 1) 70%);
+    
+    background: -webkit-radial-gradient(circle, hsla(300, 100%, 87%, 1) 0%, hsla(300, 100%, 50%, 1) 70%);
+    
+    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#FFBFFF", endColorstr="#FF00FF", GradientType=1 );
+}
+
+.bggreen{
+    background: hsla(119, 52%, 80%, 1);
+
+    background: radial-gradient(circle, hsla(119, 52%, 80%, 1) 0%, hsla(110, 100%, 48%, 1) 70%);
+    
+    background: -moz-radial-gradient(circle, hsla(119, 52%, 80%, 1) 0%, hsla(110, 100%, 48%, 1) 70%);
+    
+    background: -webkit-radial-gradient(circle, hsla(119, 52%, 80%, 1) 0%, hsla(110, 100%, 48%, 1) 70%);
+    
+    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#B1E6B0", endColorstr="#29F700", GradientType=1 );
+}
+
+.bgred{
+    background: hsla(0, 46%, 63%, 1);
+
+background: radial-gradient(circle, hsla(0, 46%, 63%, 1) 0%, hsla(0, 100%, 46%, 1) 70%);
+
+background: -moz-radial-gradient(circle, hsla(0, 46%, 63%, 1) 0%, hsla(0, 100%, 46%, 1) 70%);
+
+background: -webkit-radial-gradient(circle, hsla(0, 46%, 63%, 1) 0%, hsla(0, 100%, 46%, 1) 70%);
+
+filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#CC7575", endColorstr="#EC0000", GradientType=1 );
+}
+
+@keyframes shoeanim{
+    0% {left: 1000px;}
+    100% {left: -240px;}
+}
 .shoeAnimation{
     animation-name: shoeanim;
     animation-duration: 2s;
 }
 
+
+  
