@@ -111,7 +111,7 @@ export default function Home() {
             </div>
           </div>
           <div className="relative flex justify-center ">
-            <div className="z-10 absolute top-[-200px] text-white text-[500px] font-bold tracking-wide">
+            <div className="z-10 absolute top-[-200px] text-white text-[500px] font-bold tracking-wide">  
               <a className="pt-narrow-bold tracking-tighter">NIKE</a>
             </div>
             <div className="z-20 absolute left-[-240px] w-[600px] top-[-100px] " id="shoediv">

@@ -1,6 +1,19 @@
 import Image from "next/image";
+import React, {useState} from "react";
 
 export default function Header() {
+  const [DMP, setDMP] = useState(0); //DMP - display man products
+
+
+  const displayManProds = () =>{
+     const element = document.querySelector("#mp");
+     element?.classList.remove("hidden");
+  }
+  const hideManProds = () =>{
+    const element = document.querySelector("#mp");
+    element?.classList.add("hidden");
+ }
+
   return (
     <div className="flex justify-center" >
       <div className="flex justify-center w-[1600px] pt-10">
@@ -13,12 +26,13 @@ export default function Header() {
               height={100}
             />
           </div>
-          <div className="space-x-[40px] text-[17px]">
+          <div className="space-x-[40px] text-[22px] pt-narrow-bold  font-bold z-30">
+ 
             <a href="/">Get Started!</a>
-            <a href="/">Sales</a>
-            <a href="/products">Products</a>
-            <a href="/">FAQ</a>
-            <a href="/">About Us</a>
+            <a  onMouseOver={()=>displayManProds()} onMouseOut={()=>hideManProds()}>Man</a>
+            <a href="/products">Woman</a>
+            <a href="/">Kids</a>
+            <a href="/">Sale</a>
           </div>
           <div className="flex gap-x-2">
             <Image
@@ -38,6 +52,42 @@ export default function Header() {
           </div>
         </div>
       </div>
+      <div className="bg-white w-[100%] h-[400px] fixed z-50 top-[100px] opacity-[95%] p-5 hidden" id="mp" onMouseOver={()=>displayManProds()} >
+          <div className="flex justify-center gap-[7%]  ">
+            <div className="space-y-[10px]">
+              <h2 className="font-bold">Shoes</h2>
+              <p>All shoes</p>
+              <p>Lifestyle</p>
+              <p>Football</p>
+              <p>Training</p>
+              <p>Basketball</p>
+            </div>
+            <div className="space-y-[10px]">
+              <h2 className="font-bold">Clothing</h2>
+              <p>All cloths</p>
+              <p>Tops & T-shirts</p>
+              <p>Shorts</p>
+              <p>Hoddies</p>
+              <p>Trousers</p>
+            </div>
+            <div className="space-y-[10px]">
+              <h2 className="font-bold">Sports</h2>
+              <p>All sports</p>
+              <p>Football</p>
+              <p>Basketball</p>
+              <p>Gym</p>
+              <p>Volleyball</p>
+            </div>
+            <div className="space-y-[10px]">
+              <h2 className="font-bold">Accesories</h2>
+              <p>All accesories</p>
+              <p>Backpacks</p>
+              <p>Bags</p>
+              <p>Balls</p>
+              <p>Rubers</p>
+            </div>
+          </div>
+        </div>  
     </div>
   );
 }
