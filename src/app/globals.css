@@ -11,6 +11,7 @@
   } 
 
 .bgblue{
+    
     background: hsla(178, 83%, 59%, 1);
 
     background: radial-gradient(circle, hsla(178, 83%, 59%, 1) 0%, hsla(246, 100%, 31%, 1) 70%);
@@ -23,6 +24,8 @@
 }
 
 .bgpurple{
+    transition: all;
+    transition-duration: 5s;
     background: hsla(300, 100%, 87%, 1);
 
     background: radial-gradient(circle, hsla(300, 100%, 87%, 1) 0%, hsla(300, 100%, 50%, 1) 70%);
@@ -68,4 +71,19 @@ filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#CC7575", en
 }
 
 
-  
+@keyframes prodnav{
+    0% {height: 0px; color: white; font-size: 0px; padding: 0px;} 
+    50%  { color: white; font-size: 2px;}  
+    100% {height: 300px; color: black; font-size: 16px;}
+}
+
+.prodNavAnimation{
+    animation-name: prodnav;
+    animation-duration: 0.5s;
+}
+
+.bglogin:hover{
+    transition: all;
+    transition: 1s;
+    background-color: greenyellow;
+}

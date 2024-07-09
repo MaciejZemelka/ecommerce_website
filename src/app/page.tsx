@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Header from "./components/header";
 import { useState } from "react";
 import "./globals.css";
 
@@ -28,7 +27,7 @@ export default function Home() {
         SetShoeImage("/IMG/bluebut.png");
         setTimeout(() => element?.classList.add("shoeAnimation"), 1);
         document.querySelector("#blue")?.classList.add("border-[3px]");
-        
+
         break;
       case 1:
         element?.classList.remove("shoeAnimation")
@@ -57,7 +56,6 @@ export default function Home() {
   }
   return (
     <main className="bgblue overflow-hidden " id="bg_color">
-      <Header />
       <div className="h-[833px] flex justify-center pt-[150px] text-[24px]">
         <div className="">
           <div className="absolute left-[100px] top-[290px] text-white font-bold">
@@ -107,7 +105,7 @@ export default function Home() {
               <div className="w-[50px] h-[50px] rounded-[360px] bg-[#00f] border-[3px] cursor-pointer" id="blue" onClick={() => changeImg(0)}></div>
               <div className="w-[50px] h-[50px] rounded-[360px] bg-[#f0f] cursor-pointer" id="purple" onClick={() => changeImg(1)}></div>
               <div className="w-[50px] h-[50px] rounded-[360px] bg-[#f00] cursor-pointer" id="red" onClick={() => changeImg(2)}></div>
-              <div className="w-[50px] h-[50px] rounded-[360px] bg-[#0f0] cursor-pointer" id="green" onClick={() => changeImg(3  )}></div>
+              <div className="w-[50px] h-[50px] rounded-[360px] bg-[#0f0] cursor-pointer" id="green" onClick={() => changeImg(3)}></div>
             </div>
           </div>
           <div className="relative flex justify-center ">
