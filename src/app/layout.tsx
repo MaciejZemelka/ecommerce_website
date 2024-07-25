@@ -1,14 +1,13 @@
+'use client';
+
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "./components/header";
-
+import store from "./store/store";
+import { Provider } from "react-redux";
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: "ShopApp MaciejZemelka",
-  description: "Portfolio website made by Maciej Zemełka, react + .Net",
-};
 
 export default function RootLayout({
   children,
@@ -16,11 +15,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="" >
-        <Header/>
-        {children}
-      </body>
-    </html>
+    <Provider store={store}>
+      <html lang="en">
+        <body className={inter.className}>
+
+          <header>
+            <Header />
+          </header>
+          {children}
+
+        </body>
+      </html>
+    </Provider>
   );
 }

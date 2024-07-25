@@ -1,9 +1,25 @@
 'use client'
 
 import Image from "next/image";
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
+import { Provider } from "react-redux";
+import store from "../store/store";
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/store';
+import { useDispatch } from 'react-redux';
+import { logout } from '../store/slices/authSlice';
 export default function Header() {
+  const user = useSelector((state: RootState) => state.auth.user);
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
   const [DMP, setDMP] = useState(0); //DMP - display man products
   const [DWP, setDWP] = useState(0); //DMP - display woman products
 
@@ -44,6 +60,7 @@ export default function Header() {
   }
 
   return (
+
     <div className="flex justify-center bg-black pt-[20px] pb-[20px]" >
       <div className="flex justify-center px-[100px]  w-[100%] z-[60]  ">
         <div className="flex justify-between w-full  text-white items-center">
@@ -62,6 +79,17 @@ export default function Header() {
             <a onMouseEnter={() => displayWomanProds()} id="woman">Woman</a>
             <a href="/">Kids</a>
             <a href="/">Sale</a>
+            {isClient && (user ? (
+              <div>
+                <p>Witaj, {user}!</p>
+                <button onClick={handleLogout}>
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <p></p>
+            ))}
+
           </div>
           <div className="flex gap-x-2">
             <a href="/login">
@@ -156,5 +184,7 @@ export default function Header() {
         </div>
       </div>
     </div>
+
   );
+
 }
