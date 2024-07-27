@@ -12,7 +12,9 @@ export default function Home() {
     const [Username, setUsername] = useState("");
     const [Email, setEmail] = useState("");
     const [Password, setPassword] = useState("");
-    const [ComPassword, setComPassword] = useState("");
+    const [ConPassword, setConPassword] = useState("");
+    const [registerError, setRegisterError] = useState("");
+
     const showPassword = () => {
         const element = document.querySelector("#password") as HTMLInputElement;
         if (eyeiconstatus == 0) {
@@ -28,8 +30,8 @@ export default function Home() {
         }
     }
 
-    const register = () => {
-        const response = fetch('https://localhost:7084/api/Registration/register', {
+    const register = async () => {
+        const response =  await fetch('https://localhost:7084/api/Registration/registration', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -40,26 +42,34 @@ export default function Home() {
                 Permission: "user"
             }),
         });
-        const data = response.toString();
-        if (data == "Error") alert("Error")
+
+        const data = await response.text();
+        if (data === "Error") alert("Error")
         else if(data === "Data inserted") alert("git");
+        alert(data);
     }
 
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        register();
+        if(Password!=ConPassword){
+            setRegisterError("diffpass");
+        }
+        else{
+            register();
+        }
+        
     }
 
     return (
         <main className="bg-[#af0] h-[900px] overflow-hidden flex justify-center" id="bg_color">
             <div className="flex jusitfy-center items-center ">
-                <div className=" h-[650px] bg-white text-center pt-[40px] text-[24px] space-y-[10px]">
-                    <form onSubmit={handleSubmit}>
+                <div className=" h-[650px] bg-white text-center pt-[40px] text-[24px]">
+                    <form onSubmit={handleSubmit} className="space-y-[10px]">
                         <p className="font-bold text-[30px]">Sign Up</p>
                         <input type="text" placeholder="username" className="w-[60%] px-[6px] py-[8px] border-[1px] border-black bglogin" onChange={(e) => setUsername(e.target.value)} /><br />
                         <input type="text" placeholder="email" className="w-[60%] px-[6px] py-[8px] border-[1px] border-black bglogin"onChange={(e) => setEmail(e.target.value)} />
-                        <input type={inputType} placeholder="password" id="password" className="w-[60%] py-[8px] px-[6px] border-[1px] border-black bglogin" onChange={(e) => setPassword(e.target.value)}></input>
+                        <input type={inputType} placeholder="password" id="password" className="w-[60%] py-[8px] px-[6px] border-[1px] border-black bglogin" onChange={(e) => setPassword(e.target.value)}/>
                         <button className="absolute mx-2  border-[1px] border-black bglogin" onClick={() => showPassword()} type="button">
                             <Image
                                 src={eyeicon}
@@ -69,7 +79,10 @@ export default function Home() {
                                 id="showpass"
                             />
                         </button><br />
-                        <input type="password" placeholder="confirm password" id="confirm password" className="w-[60%] py-[8px] px-[6px] border-[1px] border-black bglogin"></input>
+                        <input type="password" placeholder="confirm password" id="confirm password" className="w-[60%] py-[8px] px-[6px] border-[1px] border-black bglogin" onChange={(e) => setConPassword(e.target.value)}/>
+                        <div>
+                            {registerError === "diffpass" ? (<p className="text-[15px] text-[#f00] text-left w-[80%] px-[20%]">Password doesn't match</p>):(<p></p>)}
+                        </div>
                         <div className="text-left w-[80%] px-[20%]">
                             <a href="password" className="text-[15px] text-[#00f]">Forgot password?</a>
                         </div>

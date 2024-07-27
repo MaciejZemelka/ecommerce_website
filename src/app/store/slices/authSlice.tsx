@@ -24,15 +24,21 @@ export const loginUser = createAsyncThunk(
     });
 
     if (!response.ok) {
+
       throw new Error('Login failed');
     }
 
     const data = await response.text();
-    if (data !== 'Valid User') {
-      throw new Error('Invalid credentials');
-      
+
+    if (data === 'No user') {
+
+      throw new Error('Wrong Email');
+
     }
-    if(data === 'Valid User'){
+    if(data === 'Wrong password'){
+      throw new Error('Wrong Password');
+    }
+    if (data === 'Valid User') {
     }
     return credentials.Email;
   }
@@ -45,7 +51,7 @@ const authSlice = createSlice({
     logout: (state) => {
       state.user = null;
       state.error = null;
-      localStorage.removeItem('user'); // Usuń dane z localStorage
+      localStorage.removeItem('user'); // removing data from local storage
     },
   },
   extraReducers: (builder) => {

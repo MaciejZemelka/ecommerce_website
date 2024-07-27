@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect, use} from "react";
 import "../globals.css";
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,7 +17,8 @@ export default function Login() {
   const [Password, setPassword] = useState("");
   const dispatch = useDispatch<AppDispatch>(); // Type the dispatch correctly
   const { user, loading, error } = useSelector((state: RootState) => state.auth);
-
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [LogError, setLogError] = useState("");
   //showPassword is function which is displaying or hiding the password for user.
   //if statement checks which state is now by checing eyeiconstatus then it changes this status, then image for it and input type of password field.
   const showPassword = () => {
@@ -40,11 +41,21 @@ export default function Login() {
 
 
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(loginUser({ Email, Password }));
-
+    setFormSubmitted(true);  
+    await dispatch(loginUser({ Email, Password }));
   };
+
+  //Use effect to see when loading is changed to false and if credentials are wrong then user will see proper alert. 
+  useEffect(() => {
+    if (!loading && formSubmitted) {
+      if (error) {
+        setLogError(error);
+      }
+      setFormSubmitted(false); 
+    }
+  }, [loading, error, formSubmitted]);
 
   return (
     <main className="bg-[#af0] h-[900px] overflow-hidden flex justify-center" id="bg_color">
@@ -64,7 +75,8 @@ export default function Login() {
               />
             </button>
             <div className="">
-              {error && <p className="text-[15px] text-[#f00] text-left w-[80%] px-[20%]">Wrong email or password</p>}
+              {LogError==="Wrong Email" ? (<p className="text-[15px] text-[#f00] text-left w-[80%] px-[20%]">Email doesn't match with any user</p>) : (<p></p>)}
+              {LogError==="Wrong Password" ? (<p className="text-[15px] text-[#f00] text-left w-[80%] px-[20%]">Wrong password</p>) : (<p></p>)}
             </div>
             <div className="text-left w-[80%] px-[20%]">
               <a href="password" className="text-[15px] text-[#00f]">Forgot password?</a>
