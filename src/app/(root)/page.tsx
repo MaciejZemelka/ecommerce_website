@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import "../globals.css";
+import Header from "../components/header";
 import { Provider } from "react-redux";
 import store from "../store/store";
 
@@ -58,7 +59,11 @@ export default function Home() {
   }
   return (
     <Provider store={store}>
+        
       <main className="bgblue overflow-hidden " id="bg_color">
+         <header className="">
+            <Header bg_color="bg-transparent" nav_textColor="text-white"/>
+        </header>
         <div className="h-[833px] flex justify-center pt-[150px] text-[24px]">
           <div className="">
             <div className="absolute left-[100px] top-[290px] text-white font-bold">

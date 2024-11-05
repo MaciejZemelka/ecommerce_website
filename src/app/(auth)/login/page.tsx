@@ -2,11 +2,11 @@
 
 import Image from "next/image";
 import { useState, useEffect, use} from "react";
-import "../globals.css";
+
 
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUser } from '../store/slices/authSlice';
-import { AppDispatch, RootState } from '../store/store';
+import { loginUser } from "@/app/store/slices/authSlice";
+import { AppDispatch, RootState } from "@/app/store/store";
 
 
 export default function Login() {
@@ -15,7 +15,7 @@ export default function Login() {
   const [inputType, setInputType] = useState("password");
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
-  const dispatch = useDispatch<AppDispatch>(); // Type the dispatch correctly
+  const dispatch = useDispatch<AppDispatch>(); 
   const { user, loading, error } = useSelector((state: RootState) => state.auth);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [LogError, setLogError] = useState("");
@@ -45,6 +45,7 @@ export default function Login() {
     e.preventDefault();
     setFormSubmitted(true);  
     await dispatch(loginUser({ Email, Password }));
+    
   };
 
   //Use effect to see when loading is changed to false and if credentials are wrong then user will see proper alert. 

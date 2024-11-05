@@ -2,13 +2,13 @@
 
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
-import { Provider } from "react-redux";
-import store from "../store/store";
+
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 import { useDispatch } from 'react-redux';
 import { logout } from '../store/slices/authSlice';
-export default function Header() {
+export default function Header({bg_color, nav_textColor} : {bg_color:string, nav_textColor:string}) {
+
   const user = useSelector((state: RootState) => state.auth.user);
   const dispatch = useDispatch();
 
@@ -61,9 +61,9 @@ export default function Header() {
 
   return (
 
-    <div className="flex justify-center bg-black pt-[20px] pb-[20px]" >
+    <div className={`flex justify-center  pt-[20px] pb-[20px] ${bg_color} text-black`} >
       <div className="flex justify-center px-[100px]  w-[100%] z-[60]  ">
-        <div className="flex justify-between w-full  text-white items-center">
+        <div className="flex justify-between w-full  items-center">
           <div>
             <Image
               src={"/IMG/NikeLogo.png"}
@@ -72,7 +72,7 @@ export default function Header() {
               height={100}
             />
           </div>
-          <div className="space-x-[40px] text-[22px] pt-narrow-bold  font-bold z-30">
+          <div className={`space-x-[40px] text-[22px] pt-narrow-bold  font-bold z-30 ${nav_textColor}`}>
 
             <a href="/">Get Started!</a>
             <a onMouseEnter={() => displayManProds()} id="man">Man</a>

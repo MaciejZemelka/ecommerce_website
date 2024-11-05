@@ -22,24 +22,26 @@ export const loginUser = createAsyncThunk(
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(credentials),
     });
-
+    
     if (!response.ok) {
-
+      
       throw new Error('Login failed');
     }
 
     const data = await response.text();
 
     if (data === 'No user') {
-
       throw new Error('Wrong Email');
 
     }
-    if(data === 'Wrong password'){
+    if (data === 'Wrong password') {
       throw new Error('Wrong Password');
     }
     if (data === 'Valid User') {
+       window.location.href = "/";
     }
+    
+
     return credentials.Email;
   }
 );

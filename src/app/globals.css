@@ -83,7 +83,7 @@ filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#CC7575", en
 }
 
 .bglogin:hover{
-    transition: all;
-    transition: 1s;
-    background-color: greenyellow;
+
+    background-color: #DDD;
+
 }
