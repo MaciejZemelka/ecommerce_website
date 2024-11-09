@@ -90,13 +90,22 @@ export default function Home() {
             }),
         });
 
-        const data = await response.text();
-        if (data === "Error") {
-            setRegisterError("Error")
+        if (!response.ok) {
+            const errorText = await response.json();
+            alert(errorText)
+            setRegisterError(errorText || "Error");
+            return;
         }
-        else if (data === "Data inserted") {
-            dispatch(loginUser({ Email, Password }))
-            window.location.href = "/";
+    
+        const data = await response.json();
+        alert(data);
+        if (data.message === "Data inserted") {
+            try {
+                await dispatch(loginUser({ Email, Password }));
+                window.location.href = "/";
+            } catch (error) {
+                alert(error);
+            }
         }
     }
 

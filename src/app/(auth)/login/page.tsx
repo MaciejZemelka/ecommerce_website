@@ -44,7 +44,13 @@ export default function Login() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormSubmitted(true);  
-    await dispatch(loginUser({ Email, Password }));
+    try {
+      await dispatch(loginUser({ Email, Password }));
+
+      
+    } catch (error) {
+      console.error('Login error:', error);
+    }
     
   };
 
