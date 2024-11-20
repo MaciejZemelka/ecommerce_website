@@ -46,11 +46,11 @@ export default function Login() {
     setFormSubmitted(true);  
     try {
       await dispatch(loginUser({ Email, Password }));
-
-      
+      window.location.href = "/";
     } catch (error) {
       console.error('Login error:', error);
     }
+    
     
   };
 

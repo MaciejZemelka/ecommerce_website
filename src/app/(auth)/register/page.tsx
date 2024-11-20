@@ -92,13 +92,11 @@ export default function Home() {
 
         if (!response.ok) {
             const errorText = await response.json();
-            alert(errorText)
             setRegisterError(errorText || "Error");
             return;
         }
     
         const data = await response.json();
-        alert(data);
         if (data.message === "Data inserted") {
             try {
                 await dispatch(loginUser({ Email, Password }));

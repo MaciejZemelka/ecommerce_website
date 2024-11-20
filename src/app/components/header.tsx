@@ -7,9 +7,9 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 import { useDispatch } from 'react-redux';
 import { logout } from '../store/slices/authSlice';
-export default function Header({bg_color, nav_textColor} : {bg_color:string, nav_textColor:string}) {
+export default function Header({ bg_color, nav_textColor }: { bg_color: string, nav_textColor: string }) {
 
-  const user = useSelector((state: RootState) => state.auth.user);
+  const accessToken = useSelector((state: RootState) => state.auth.accessToken);
   const dispatch = useDispatch();
 
   const handleLogout = () => {
@@ -79,28 +79,49 @@ export default function Header({bg_color, nav_textColor} : {bg_color:string, nav
             <a onMouseEnter={() => displayWomanProds()} id="woman">Woman</a>
             <a href="/">Kids</a>
             <a href="/">Sale</a>
-            {isClient && (user ? (
-              <div>
-                <p>Witaj, {user}!</p>
-                <button onClick={handleLogout}>
-                  Logout
-                </button>
-              </div>
-            ) : (
-              <p></p>
-            ))}
+
 
           </div>
-          <div className="flex gap-x-2">
-            <a href="/login">
-              <Image
-                src={"/IMG/user.png"}
-                alt="logreg"
-                width={40}
-                height={40}
 
-              />
-            </a>
+          <div className="flex ">
+
+            {isClient && (accessToken ? (
+              <>
+                <div className="flex text-white ">
+                  <div className="px-10 justify-center items-center gap-x-2 text-center">
+                    <a>Hello!</a><br/>
+                    <a href="" onClick={handleLogout}>
+                      Logout
+                    </a>
+                  </div>
+                  <div>
+                    <a href="/panel">
+                      <Image
+                        src={"/IMG/user.png"}
+                        alt="logreg"
+                        width={40}
+                        height={40}
+
+                      />
+                    </a>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <a href="/login">
+                  <Image
+                    src={"/IMG/user.png"}
+                    alt="logreg"
+                    width={40}
+                    height={40}
+
+                  /></a>
+              </>
+            ))}
+
+
+
             <Image
               src={"/IMG/sci.png"}
               alt="ShoppingCart"

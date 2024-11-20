@@ -45,6 +45,7 @@ export const loginUser = createAsyncThunk(
 
 
         const data = await response.json();
+
         return {  
           accessToken: data.accessToken,
           refreshToken: data.refreshToken,
@@ -67,12 +68,15 @@ export const newAccessToken = createAsyncThunk(
         body: JSON.stringify({ refreshToken: auth.refreshToken }),
       });
 
-      if (!response.ok) {
-        dispatch(logout());
-        return rejectWithValue('Token refresh failed');
-      }
+
+       if (!response.ok) {
+          const errorResponse = await response.json();
+          dispatch(logout());
+         return rejectWithValue('Token refresh failed');
+       }  
 
       const data = await response.json();
+
       return {
         accessToken: data.accessToken,
       };
@@ -81,6 +85,8 @@ export const newAccessToken = createAsyncThunk(
     }
   }
 );
+
+
 
 
 
@@ -115,7 +121,7 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
-        alert(loginUser);
+
         state.loading = false;
         state.user = "user";
         state.error = null;
@@ -140,9 +146,10 @@ const authSlice = createSlice({
       .addCase(newAccessToken.fulfilled, (state, action) => {
         state.loading = false;
         state.accessToken = action.payload.accessToken;
-        const expiresAt = Date.now() + 3600 * 1000; 
+        const expiresAt = Date.now() + 30 * 60 * 1000; 
         state.expiresAt = expiresAt;
-
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('expiresAt');
         localStorage.setItem('accessToken', action.payload.accessToken);
         localStorage.setItem('expiresAt', expiresAt.toString());
       })

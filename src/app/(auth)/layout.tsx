@@ -3,7 +3,7 @@
 import { Inter } from "next/font/google";
 import Header from "../components/header";
 import { Provider, useSelector } from "react-redux";
-import { useRouter } from "next/navigation"; // Import useRouter
+import { useRouter } from "next/navigation";
 
 import store from "../store/store";
 import React from "react";
@@ -24,59 +24,26 @@ export default function RootLayout({
 
 function AuthRedirect({ children }: { children: React.ReactNode }) {
   const router = useRouter();
-  const isAuthenticated = useSelector((state: any) => state.auth.accessToken); // Zakładamy, że stan logowania jest w state.auth.isAuthenticated
+  const isAuthenticated = useSelector((state: any) => state.auth.accessToken);
   const expiresAt = useSelector((state: any) => state.auth.expiresAt)
   React.useEffect(() => {
     if (isAuthenticated && Date.now() < expiresAt) {
       router.push("/panel");
     }
-  }, [isAuthenticated, router]);
+  }, []);
 
   return (
-    <Provider store={store}>
-      <html lang="en">
-        <body className={inter.className}>
 
-          <header>
-            <Header bg_color="bg-black" nav_textColor="text-white" />
-          </header>
-          {children}
+    <html lang="en">
+      <body className={inter.className}>
 
-        </body>
-      </html>
-    </Provider>
+        <header>
+          <Header bg_color="bg-black" nav_textColor="text-white" />
+        </header>
+        {children}
+
+      </body>
+    </html>
+
   );
 }
-
-
-
-// 'use client'
-
-// import type { Metadata } from "next";
-// import { Inter } from "next/font/google";
-// import Header from "../components/header";
-// import store from "../store/store";
-// import { Provider } from "react-redux";
-// const inter = Inter({ subsets: ["latin"] });
-
-
-// export default function RootLayout({
-//   children,
-// }: Readonly<{
-//   children: React.ReactNode;
-// }>) {
-//   return (
-    // <Provider store={store}>
-    //   <html lang="en">
-    //     <body className={inter.className}>
-
-    //       <header>
-    //         <Header bg_color="bg-black" nav_textColor="text-white" />
-    //       </header>
-    //       {children}
-
-    //     </body>
-    //   </html>
-    // </Provider>
-//   );
-// }
