@@ -62,7 +62,10 @@ export default function Header({ bg_color, nav_textColor }: { bg_color: string, 
   return (
 
     <div className={`flex justify-center  pt-[20px] pb-[20px] ${bg_color} text-black`} >
-      <div className="flex justify-center px-[100px]  w-[100%] z-[60]  ">
+       <div className="flex justify-center px-[100px]  w-[100%] z-[60]  min-[1200px]:hidden">
+            <p className="text-white">sidebar</p>
+       </div>
+      <div className="flex justify-center px-[100px]  w-[100%] z-[60]  max-[1200px]:hidden">
         <div className="flex justify-between w-full  items-center">
           <div>
             <Image
