@@ -3,15 +3,6 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 import { access, stat } from 'fs';
 
-interface AuthState {
-  user: string | null;
-  loading: boolean;
-  error: string | null;
-  accessToken: string | null;
-  refreshToken: string | null;
-  expiresAt: number | null;
-}
-
 const initialState: AuthState = {
   user: null,
   loading: false,
@@ -20,6 +11,8 @@ const initialState: AuthState = {
   refreshToken: null,
   expiresAt: null,
 };
+
+
 
 // Async thunk for user login
 export const loginUser = createAsyncThunk(

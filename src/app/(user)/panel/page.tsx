@@ -8,9 +8,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from "@/app/store/slices/authSlice";
 import { AppDispatch, RootState } from "@/app/store/store";
 import { create } from "domain";
-import UserAddresses from "@/app/components/addresses";
-import AddressesArea from "@/app/components/addresses";
+//import UserAddresses from "@/app/components/(user)/addresses";
+import AddressesArea from "@/app/components/(user)/addresses";
 import { logout } from "@/app/store/slices/authSlice";
+import { resourceUsage } from "process";
 
 
 
@@ -25,8 +26,9 @@ export default function Home() {
     const [Gender, setGender] = useState("");
     const [Addresses, setAddresses] = useState<UserAddressProps[]>([]);
     const [selectedAddressId, setSelectedAddressId] = useState<number | null>(null);
-    const dispatch=useDispatch();
+    const dispatch = useDispatch();
     const [User, setUser] = useState<UserProps>();
+
     const userData = async () => {
 
         const response = await fetch('https://localhost:7084/api/User/UserDetails', {
@@ -40,7 +42,6 @@ export default function Home() {
         }
 
         const data = await response.json();
-
         setEmail(data.email);
         setCreatedDate(data.createdDate.split(" ")[0]);
         setFirstName(data.firstName);
@@ -49,7 +50,6 @@ export default function Home() {
         setDateOfBirth(data.DateOfBirth);
         setGender(data.gender);
     };
-
     const handleSelectAddress = (id: number) => {
         setSelectedAddressId(prevId => (prevId === id ? null : id));
     };
@@ -68,18 +68,21 @@ export default function Home() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ refreshToken: localStorage.getItem("refreshToken") }),
         })
-            .then((response) => response.json())
-            .then((data) => {
 
-                setAddresses(data.addresses);
+        if (!response.ok) {
+         
+            const errorResponse = await response.status;
+            return errorResponse;
+        }
+
+        const data = await response.json();
 
 
+        setAddresses(data.addresses);
 
-            })
-            .catch((error) => console.error("Error:", error));
     };
 
-    const handleLogout= () =>{
+    const handleLogout = () => {
         dispatch(logout());
     }
 
@@ -131,15 +134,16 @@ export default function Home() {
                             <div>
                                 <label htmlFor="Gender">Gender:</label><br />
                                 <select
-                                value={Gender} onChange={(e)=>setGender(e.target.value)} className=" px-[20px] w-[100%] py-[10px] border-[1px] border-black bglogin rounded-[20px]" 
+                                    value={Gender} onChange={(e) => setGender(e.target.value)} className=" px-[20px] w-[100%] py-[10px] border-[1px] border-black bglogin rounded-[20px]"
                                 >
+                                    <option value=" ">Not specified</option>
                                     <option value="woman">woman</option>
                                     <option value="man">man</option>
                                     <option value="other">other</option>
-                                    <option value=" ">Not specified</option>
-                                    
+
+
                                 </select>
-                            
+
                             </div>
 
                             <div>

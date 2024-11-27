@@ -1,3 +1,13 @@
+interface AuthState {
+    user: string | null;
+    loading: boolean;
+    error: string | null;
+    accessToken: string | null;
+    refreshToken: string | null;
+    expiresAt: number | null;
+  }
+  
+ 
 interface UserProps{
     email:string;
     createdDate: string;
@@ -24,4 +34,9 @@ interface AddressProps {
 
 interface UserAddressProps{
     addresses: Address[] | null;
+}
+
+interface AddressInputFieldProps {
+    address: AddressProps | null;
+    type: string;
 }
