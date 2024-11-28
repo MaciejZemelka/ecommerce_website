@@ -12,6 +12,8 @@ import { create } from "domain";
 import AddressesArea from "@/app/components/(user)/addresses";
 import { logout } from "@/app/store/slices/authSlice";
 import { resourceUsage } from "process";
+import { fetchWithAuth } from "@/app/api/api";
+import { current } from "@reduxjs/toolkit";
 
 
 
@@ -20,7 +22,7 @@ export default function Home() {
     const [Email, setEmail] = useState("");
     const [FirstName, setFirstName] = useState("");
     const [LastName, setLastName] = useState("");
-    const [PhoneNumber, setPhoneNumber] = useState("");
+    const [PhoneNumber, setPhoneNumber] = useState<number | null>(null);
     const [DateOfBirth, setDateOfBirth] = useState("");
     const [CreatedDate, setCreatedDate] = useState("");
     const [Gender, setGender] = useState("");
@@ -29,56 +31,99 @@ export default function Home() {
     const dispatch = useDispatch();
     const [User, setUser] = useState<UserProps>();
 
+
     const userData = async () => {
-
-        const response = await fetch('https://localhost:7084/api/User/UserDetails', {
+        const url = 'https://localhost:7084/api/User/UserDetails';
+        const options: RequestInit = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ refreshToken: localStorage.getItem("refreshToken") }),
-        });
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
 
-        if (!response.ok) {
-            throw new Error("Error occurred while fetching user data");
+        try {
+            const response = await fetchWithAuth(url, options);
+
+            if (response.ok) {
+                const data = await response.json();
+                setEmail(data.email);
+                setCreatedDate(data.createdDate.split(" ")[0]);
+                setFirstName(data.firstName.split(" ")[0]);
+                setLastName(data.lastName.split(" ")[0]);
+                setPhoneNumber(Number(data.phoneNumber));
+                setDateOfBirth(data.dateOfBirth);
+                setGender(data.gender.split(" ")[0]);
+            }
+            else {
+                console.log("Something went wrong while selecting data from db");
+            }
+
+        } catch (error) {
+            console.log("error");
         }
 
-        const data = await response.json();
-        setEmail(data.email);
-        setCreatedDate(data.createdDate.split(" ")[0]);
-        setFirstName(data.firstName);
-        setLastName(data.lastName);
-        setPhoneNumber(data.PhoneNumber);
-        setDateOfBirth(data.DateOfBirth);
-        setGender(data.gender);
+
+
     };
     const handleSelectAddress = (id: number) => {
         setSelectedAddressId(prevId => (prevId === id ? null : id));
     };
 
-    const handleDeleteAddress = async () => {
-        if (!selectedAddressId) {
-            alert("No address selected.");
-            return;
-        }
-        //dalej kod wpisz
-    }
-    const UserAddresses = async () => {
 
-        const response = await fetch('https://localhost:7084/api/User/UserAddresses', {
+    const userDetailsUpdate = async () => {
+        const url = "https://localhost:7084/api/User/UpdateUserDetails";
+        const options: RequestInit = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ refreshToken: localStorage.getItem("refreshToken") }),
-        })
+            body: JSON.stringify({
+                first_name: FirstName,
+                last_name: LastName,
+                PhoneNumber: PhoneNumber,
+                date_of_birth: DateOfBirth.toString(),
+                gender: Gender
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
 
-        if (!response.ok) {
-         
-            const errorResponse = await response.status;
-            return errorResponse;
+        try {
+            const respone = await fetchWithAuth(url, options);
+            if (respone.ok) {
+                console.log("Data updated");
+                window.location.href = ('/panel');
+            }
+            else {
+                console.log("Something went wrong while updating");
+            }
+        } catch (error) {
+            console.log(error);
         }
 
-        const data = await response.json();
+    }
 
+    const UserAddresses = async () => {
+        const url = "https://localhost:7084/api/User/UserAddresses";
+        const options: RequestInit = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
 
-        setAddresses(data.addresses);
+        try {
+            const response = await fetchWithAuth(url, options);
+            if (response.ok) {
+                const data = await response.json();
+                console.log('Data selected');
+                setAddresses(data.addresses);
+            }
+            else {
+                console.log('Something went wrong while selecting from db')
+            }
+        } catch (error) {
+            console.log(error);
+        }
+
 
     };
 
@@ -100,7 +145,7 @@ export default function Home() {
                         <div className=" grid grid-cols-2 gap-4 gap-y-4 w-full">
                             <div>
                                 <label htmlFor="Email">Email:</label><br />
-                                <input type="text" placeholder="Email" value={Email} onChange={(e) => setEmail(e.target.value)} className=" px-[20px] w-[100%] py-[10px] border-[1px] border-black bglogin rounded-[20px]" /><br />
+                                <input type="text" placeholder="Email" value={Email} disabled className=" px-[20px] w-[100%] py-[10px] border-[1px] border-black bglogin rounded-[20px]" /><br />
                             </div>
 
                             <div>
@@ -110,38 +155,38 @@ export default function Home() {
 
                             <div>
                                 <label htmlFor="FirstName">First name:</label><br />
-                                <input type="text" placeholder="First name" value={FirstName} onChange={(e) => setFirstName(e.target.value)} className=" px-[20px] w-[100%] py-[10px] border-[1px] border-black bglogin rounded-[20px]" /><br />
+                                <input type="text" placeholder="First name" value={FirstName || ""} onChange={(e) => setFirstName(e.target.value)} className=" px-[20px] w-[100%] py-[10px] border-[1px] border-black bglogin rounded-[20px]" /><br />
 
                             </div>
 
                             <div>
                                 <label htmlFor="LastName">Last name:</label><br />
-                                <input type="text" placeholder="Last name" value={LastName} onChange={(e) => setLastName(e.target.value)} className=" px-[20px] w-[100%] py-[10px] border-[1px] border-black bglogin rounded-[20px]" /><br />
+                                <input type="text" placeholder="Last name" value={LastName || ""} onChange={(e) => setLastName(e.target.value)} className=" px-[20px] w-[100%] py-[10px] border-[1px] border-black bglogin rounded-[20px]" /><br />
 
                             </div>
 
                             <div>
                                 <label htmlFor="PhoneNumber">Phone number:</label><br />
-                                <input type="number" placeholder="Phone number" className=" px-[20px] py-[10px] w-[100%] border-[1px] border-black bglogin rounded-[20px]" /><br />
+                                <input type="number" placeholder="Phone number" value={PhoneNumber || ""} onChange={(e) => setPhoneNumber(Number(e.target.value))} className=" px-[20px] py-[10px] w-[100%] border-[1px] border-black bglogin rounded-[20px]" /><br />
 
                             </div>
 
                             <div>
                                 <label htmlFor="DateOfBirth">Date of birth:</label><br />
-                                <input type="date" placeholder="Date of birth" className=" px-[20px] w-[100%] py-[10px] w-[100%] border-[1px] border-black bglogin rounded-[20px]" /><br />
+                                <input type="date" placeholder="Date of birth" value={DateOfBirth || ""} onChange={(e) => setDateOfBirth(e.target.value)} className=" px-[20px] w-[100%] py-[10px] w-[100%] border-[1px] border-black bglogin rounded-[20px]" /><br />
                             </div>
 
                             <div>
                                 <label htmlFor="Gender">Gender:</label><br />
                                 <select
-                                    value={Gender} onChange={(e) => setGender(e.target.value)} className=" px-[20px] w-[100%] py-[10px] border-[1px] border-black bglogin rounded-[20px]"
+                                    value={Gender || ''}
+                                    onChange={(e) => setGender(e.target.value)}
+                                    className=" px-[20px] w-[100%] py-[10px] border-[1px] border-black bglogin rounded-[20px]"
                                 >
-                                    <option value=" ">Not specified</option>
+                                    <option value="" disabled>Select gender</option>
                                     <option value="woman">woman</option>
                                     <option value="man">man</option>
                                     <option value="other">other</option>
-
-
                                 </select>
 
                             </div>
@@ -153,7 +198,7 @@ export default function Home() {
 
                         </div>
                         {updateButton !== 0 ? (
-                            <button className="px-[20px] w-full py-[10px] border-[1px] border-black text-white bg-[black] rounded-[20px]" type="submit">Update changes!</button>
+                            <button className="px-[20px] w-full py-[10px] border-[1px] border-black text-white bg-[black] rounded-[20px]" onClick={() => userDetailsUpdate()}>Update changes!</button>
                         ) : (
                             <button className="px-[20px] w-full py-[10px] border-[1px] border-black curson bg-[#AAA] rounded-[20px]" disabled>Update changes!</button>
                         )}

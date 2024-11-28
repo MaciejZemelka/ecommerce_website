@@ -7,6 +7,7 @@ import { ACTION_REFRESH } from "next/dist/client/components/router-reducer/route
 import { useState } from "react";
 
 export default function InputAddressField({ address, type }: AddressInputFieldProps) {
+  const [id] = useState(address?.id)
   const [newStreet, setNewStreet] = useState(address?.streetName)
   const [newHouseNumber, setNewHouseNumber] = useState(address?.houseNumber)
   const [newApartmentNumber, setApartmentNumber] = useState(address?.apartmentNumber)
@@ -14,41 +15,101 @@ export default function InputAddressField({ address, type }: AddressInputFieldPr
   const [newPostalCode, setNewPostalCode] = useState(address?.postalCode)
   const [newCountry, setNewCountry] = useState(address?.country)
 
-  const updateAddress =()=>{
+  const deleteAddress = async () => {
+    const url = 'https://localhost:7084/api/User/DeleteAddress';
+
+    const options: RequestInit = {
+      method: 'POST',
+      body: JSON.stringify({
+        addressId: id
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+
+    try {
+      const response = await fetchWithAuth(url, options);
+
+      if (response.ok) {
+        const responseData = await response.text;
+        console.log('Address deleted', responseData);
+        window.location.href = "/panel";
+      } else {
+        console.error('Something went wrong while deleting address', response.status);
+      }
+    } catch (error) {
+        console.error(error);
+    }
+  }
+
+  const updateAddress = async () => {
+  const url = 'https://localhost:7084/api/User/UpdateAddress';
+
+  const options: RequestInit = {
+    method: 'POST',
+    body: JSON.stringify({
+      addressId: id,
+      country: newCountry,
+      city: newCity,
+      streetName: newStreet,
+      houseNumber: newHouseNumber,
+      apartmentNumber: newApartmentNumber,
+      postalCode: newPostalCode
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+
+  try {
+    const response = await fetchWithAuth(url, options);
+
+    if (response.ok) {
+      const responseData = await response.text;
+      console.log('Address updated', responseData);
+      window.location.href = "/panel";
+    } else {
+      console.error('Something went wrong while updating', response.status);
+    }
+  } catch (error) {
+    console.error(error);
+  }
 
   }
-  const addNewAddress = async () =>{
+  const addNewAddress = async () => {
     const url = 'https://localhost:7084/api/User/AddNewAddress';
 
-      const options: RequestInit = {
-        method: 'POST',
-        body: JSON.stringify({
-          country: newCountry,
-          city: newCity,
-          streetName: newStreet,
-          houseNumber: newHouseNumber,
-          apartmentNumber: newApartmentNumber,
-          postalCode: newPostalCode
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      };
-      try {
-        const response = await fetchWithAuth(url, options);
-    
-        if (response.ok) {
-          const responseData = await response.text;
-          console.log('Adres dodany pomyślnie', responseData);
-          window.location.href = "/panel";
-        } else {
-          console.error('Błąd podczas dodawania adresu', response.status);
-        }
-      } catch (error) {
-        console.error('Wystąpił błąd podczas wysyłania żądania:', error);
-      }
+    const options: RequestInit = {
+      method: 'POST',
+      body: JSON.stringify({
+        country: newCountry,
+        city: newCity,
+        streetName: newStreet,
+        houseNumber: newHouseNumber,
+        apartmentNumber: newApartmentNumber,
+        postalCode: newPostalCode
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
     };
-  
+    try {
+      const response = await fetchWithAuth(url, options);
+
+      if (response.ok) {
+        const responseData = await response.text;
+        console.log('Adres dodany pomyślnie', responseData);
+        window.location.href = "/panel";
+      } else {
+        console.error('Błąd podczas dodawania adresu', response.status);
+      }
+    } catch (error) {
+      console.error('Wystąpił błąd podczas wysyłania żądania:', error);
+    }
+  };
+
   return (
     <Popover.Root>
       <Popover.Trigger >
@@ -58,7 +119,7 @@ export default function InputAddressField({ address, type }: AddressInputFieldPr
       <Popover.Content >
         <div className='px-4 py-2 bg-white border-[3px] border-black rounded-[20px] w-[72%] ml-[4px] '>
           <div className='text-center py-2'>
-            <span className='font-bold'>Address</span>
+            <span className='font-bold'>Address {id} </span>
           </div>
           <div className="grid grid-cols-2 gap-2">
             <div className="flex flex-col">
@@ -130,7 +191,7 @@ export default function InputAddressField({ address, type }: AddressInputFieldPr
             <button className='py-2 bg-black text-white w-full rounded-[10px] ' onClick={() => { type === "edit" ? updateAddress() : addNewAddress() }}>
               Apply
             </button>
-            <button className='py-2 bg-black text-white w-full rounded-[10px]' onClick={() => { type === "edit" ? updateAddress() : addNewAddress() }}>
+            <button className='py-2 bg-black text-white w-full rounded-[10px]' onClick={() => deleteAddress()}>
               Delete
             </button>
           </div>
