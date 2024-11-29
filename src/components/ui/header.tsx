@@ -4,9 +4,9 @@ import Image from "next/image";
 import React, { useState, useEffect } from "react";
 
 import { useSelector } from 'react-redux';
-import { RootState } from '../store/store';
+import { RootState } from '../../app/store/store';
 import { useDispatch } from 'react-redux';
-import { logout } from '../store/slices/authSlice';
+import { logout } from '../../app/store/slices/authSlice';
 export default function Header({ bg_color, nav_textColor }: { bg_color: string, nav_textColor: string }) {
 
   const accessToken = useSelector((state: RootState) => state.auth.accessToken);
@@ -90,14 +90,6 @@ export default function Header({ bg_color, nav_textColor }: { bg_color: string, 
 
             {isClient && (accessToken ? (
               <>
-                <div className="flex text-white ">
-                  <div className="px-10 justify-center items-center gap-x-2 text-center">
-                    <a>Hello!</a><br/>
-                    <a href="" onClick={handleLogout}>
-                      Logout
-                    </a>
-                  </div>
-                  <div>
                     <a href="/panel">
                       <Image
                         src={"/IMG/user.png"}
@@ -107,8 +99,6 @@ export default function Header({ bg_color, nav_textColor }: { bg_color: string, 
 
                       />
                     </a>
-                  </div>
-                </div>
               </>
             ) : (
               <>

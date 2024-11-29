@@ -10,6 +10,8 @@ import { newAccessToken, logout } from "../store/slices/authSlice";
 import { loginUser } from "@/app/store/slices/authSlice";
 import { AppDispatch, RootState } from "@/app/store/store";
 import Header from "../../components/ui/header";
+import TopBar from "@/components/ui/topbar";
+import Baner from "@/components/ui/baner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -78,7 +80,9 @@ const AuthCheck = ({ children }: { children: React.ReactNode }) => {
         <body className={inter.className}>
 
         <header>
-          <Header bg_color="bg-black" nav_textColor="text-white" />
+          <TopBar textColor="black"></TopBar>
+          <Header bg_color="bg-white" nav_textColor="text-black" />
+          <Baner></Baner>
         </header>
           {children}
 

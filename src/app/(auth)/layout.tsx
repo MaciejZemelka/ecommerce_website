@@ -1,7 +1,7 @@
 'use client'
 
 import { Inter } from "next/font/google";
-import Header from "../components/header";
+import Header from "../../components/ui/header";
 import { Provider, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 

@@ -9,7 +9,7 @@ import { loginUser } from "@/app/store/slices/authSlice";
 import { AppDispatch, RootState } from "@/app/store/store";
 import { create } from "domain";
 //import UserAddresses from "@/app/components/(user)/addresses";
-import AddressesArea from "@/app/components/(user)/addresses";
+import AddressesArea from "@/components/(user)/addresses";
 import { logout } from "@/app/store/slices/authSlice";
 import { resourceUsage } from "process";
 import { fetchWithAuth } from "@/app/api/api";
