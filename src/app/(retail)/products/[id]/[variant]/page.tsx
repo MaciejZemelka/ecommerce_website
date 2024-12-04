@@ -2,29 +2,48 @@
 
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-
+import Image from 'next/image';
+import ProductPage from '@/components/(retail)/productPage';
 
 
 export default function Home() {
   const { id, variant } = useParams();
   const [product, setProduct] = useState<ProductPageProps | null>(null);
-  const [VariantImages, SetVariantImages] = useState<VariantProps|null>(null)
-  const [mainImage, setMainImage] = useState()
+  const [otherVariants, setOtherVariants] = useState<ProductVariantsProps | null>(null);
+  const [VariantImages, SetVariantImages] = useState<VariantProps | null>(null)
+  const [mainImage, setMainImage] = useState<string | null>(null);
 
-  let url="https://localhost:7084/GetProduct?ProductId="+id+"&color="+variant;
-  const fetchProduct = async () => {
-    try {
-      const response = await fetch(url);
-      const data: ProductPageProps = await response.json();
-      setProduct(data);
-    } catch (error) {
-      console.error('Błąd podczas pobierania produktu:', error);
-    }
-  };
+
+
+  let url = "https://localhost:7084/GetProduct?ProductId=" + id + "&color=" + variant;
+
 
   useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const response = await fetch(url);
+        const data: ProductPageProps = await response.json();
+        await setProduct(data);
+
+      } catch (error) {
+        console.error('Błąd podczas pobierania produktu:', error);
+      }
+    };
+
+    const fetchOtherVariants = async () => {
+      try {
+        const response = await fetch('https://localhost:7084/GetVariants?ProductId='+id);
+        const data: ProductVariantsProps = await response.json();
+        await setOtherVariants(data);
+
+      } catch (error) {
+        console.error('Błąd podczas pobierania produktu:', error);
+      }
+    };
+
     if (id && variant) {
       fetchProduct();
+      fetchOtherVariants();
     } else {
       window.location.href = '/';
     }
@@ -35,20 +54,14 @@ export default function Home() {
   }
 
   return (
-    <div className='p-4'>
-        <div>
+    <main className='flex justify-center'>
 
-        
-        {Object.values(product.variant.images[0]).slice(1).map((img)=>(
-            <img
-              src={`https://localhost:7084/images/products/${img}`}>
-            </img>
-        ))}
-        </div>
-        <div>
-            
-        </div>
-    </div>
-   
+        {product && otherVariants && (
+          <ProductPage product={product} otherVariants={otherVariants}></ProductPage>
+        )
+        }
+
+    </main>
+
   );
 }

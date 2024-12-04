@@ -74,15 +74,23 @@ interface ImageGalleryProps {
     name: string;
     description: string;
     category: string;
-    prize: number;
+    price: number;
     gender: string;
     height: string;
     variants: VariantProps[]; // Użyj 'variants' zamiast 'variant'
   }
 
-  type ProductPageProps = {
+  interface ProductPageProps {
     productId: number;
     name: string;
     price: number;
+    description: string;
+    height: string;
+    gender: string
     variant: VariantProps;
   };
+
+  interface ProductVariantsProps{
+    productId: number;
+    colors: stringp[];
+  }
