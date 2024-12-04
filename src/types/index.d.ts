@@ -39,4 +39,50 @@ interface UserAddressProps{
 interface AddressInputFieldProps {
     address: AddressProps | null;
     type: string;
+}  
+
+interface FiltersProps {
+    size: number,
+    colors: string,
+    genders: string;
+    heights: string;
 }
+
+interface FiltersArrayProps{
+    sizes: number[] |null,
+    colors: string[] | null,
+    genders: string[] |null;
+    heights: string[] |null;
+}
+
+interface ImageGalleryProps {
+    image1: string ;
+    image2: string ;
+    image3: string ;
+    image4: string;
+  }
+  
+  interface VariantProps {
+    color: string;
+    discount: number;
+    sizes: number[]; // Zakładam, że lista rozmiarów nie powinna być null
+    images: ImageGalleryProps[]; // Obrazy w każdym wariancie
+  }
+  
+  interface ProductProps {
+    productId: number;
+    name: string;
+    description: string;
+    category: string;
+    prize: number;
+    gender: string;
+    height: string;
+    variants: VariantProps[]; // Użyj 'variants' zamiast 'variant'
+  }
+
+  type ProductPageProps = {
+    productId: number;
+    name: string;
+    price: number;
+    variant: VariantProps;
+  };

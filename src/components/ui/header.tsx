@@ -77,7 +77,7 @@ export default function Header({ bg_color, nav_textColor }: { bg_color: string, 
           </div>
           <div className={`space-x-[40px] text-[22px] pt-narrow-bold  font-bold z-30 ${nav_textColor}`}>
 
-            <a href="/">Get Started!</a>
+            <a href="/products">Get Started!</a>
             <a onMouseEnter={() => displayManProds()} id="man">Man</a>
             <a onMouseEnter={() => displayWomanProds()} id="woman">Woman</a>
             <a href="/">Kids</a>
