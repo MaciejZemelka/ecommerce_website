@@ -39,7 +39,9 @@ export default function Home() {
 
     let filtered = products.filter((product) => {
       const matchesSize = selectedFilters.sizes.length
-        ? product.variants.some((variant) => selectedFilters.sizes.includes(variant.sizes[0].toString())) // Dostosuj logikę do wielkości
+        ? product.variants.some((variant) =>
+          variant.sizes.some((size) => selectedFilters.sizes.includes(size))
+        )
         : true;
       const matchesColor = selectedFilters.colors.length
         ? product.variants.some((variant) => selectedFilters.colors.includes(variant.color))
@@ -59,6 +61,9 @@ export default function Home() {
 
   return (
     <main className="bg-[#FFF] w-full flex" id="bg_color">
+      <div className="min-[1200px]:hidden absolute">
+          <button>Show filters</button>
+      </div>
       {filters && (
         <FilterSideBar
           filters={filters}

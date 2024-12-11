@@ -56,7 +56,7 @@ const AuthCheck = ({ children }: { children: React.ReactNode }) => {
 
         if (!response.ok) {
             dispatch(logout());
-            window.location.href="/";
+           // window.location.href="/";
         }
 
     }

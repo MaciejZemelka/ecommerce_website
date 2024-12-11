@@ -35,7 +35,7 @@ export default function ProductElementView({ product }: { product: ProductProps[
   };
 
   return (
-    <div className='grid grid-cols-3 w-full'>
+    <div className='grid grid-cols-3 w-full max-[1200px]:grid-cols-2'>
       {product.map((prod, index) => {
         const variantImages = selectedVariants[index]?.images.length > 0
           ? Object.values(selectedVariants[index].images[0])
